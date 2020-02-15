@@ -41,7 +41,7 @@ async function main(mailAddress, password) {
   await passwordInput[0].type(password)
 
   const loginButton = await page.$x(
-    "//button[.//span[contains(text(), 'ログイン')]]",
+    "//button[.//*[contains(text(), 'ログイン')]]",
   )
   loginButton[0].click()
 
