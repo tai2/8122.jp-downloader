@@ -63,18 +63,32 @@ async function main(mailAddress, password) {
 
   const cookies = await page.cookies()
 
-  // 4. Download
   let count = 1
-  const downloadLinks = await page.$x(
-    "//a[contains(text(), 'ダウンロードする')]",
-  )
-  const downlaodUrls = await Promise.all(
-    downloadLinks.map(downloadLink => downloadLink.evaluate(a => a.href)),
-  )
-  for (const downloadUrl of downlaodUrls) {
-    await download(downloadUrl, cookies, `${count}.jpg`)
-    console.log(`${downloadUrl} downloaded`)
-    count++
+  for (;;) {
+    // 4. Download
+    const downloadLinks = await page.$x(
+      "//a[contains(text(), 'ダウンロードする')]",
+    )
+    const downlaodUrls = await Promise.all(
+      downloadLinks.map(downloadLink => downloadLink.evaluate(a => a.href)),
+    )
+    for (const downloadUrl of downlaodUrls) {
+      await download(downloadUrl, cookies, `${count}.jpg`)
+      console.log(`${downloadUrl} downloaded`)
+      count++
+    }
+
+    // 5. Go to next page
+    const nextPageLink = await page.$x("//a[contains(text(), '次へ')]")
+    const cursor = await nextPageLink[0].evaluate(
+      a => getComputedStyle(a).cursor,
+    )
+    if (cursor === 'pointer') {
+      nextPageLink[0].click()
+      await page.waitForNavigation()
+    } else {
+      break
+    }
   }
 
   await browser.close()
