@@ -1,0 +1,16 @@
+{
+  "name": "8122.jp-downloader",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "tai2 <hello@tai2.net>",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write index.js"
+  },
+  "dependencies": {
+    "puppeteer": "^2.1.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1"
+  }
+}
