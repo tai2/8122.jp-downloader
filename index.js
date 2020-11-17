@@ -79,12 +79,12 @@ async function main(mailAddress, password) {
     }
 
     // 5. Go to next page
-    const nextPageLink = await page.$x("//a[contains(text(), '次へ')]")
-    const cursor = await nextPageLink[0].evaluate(
+    const nextPageButton = await page.$x("//button[contains(text(), '次へ')]")
+    const cursor = await nextPageButton[0].evaluate(
       a => getComputedStyle(a).cursor,
     )
     if (cursor === 'pointer') {
-      nextPageLink[0].click()
+      nextPageButton[0].click()
       await page.waitForNavigation()
     } else {
       break
