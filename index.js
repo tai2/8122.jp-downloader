@@ -59,7 +59,7 @@ async function main(mailAddress, password) {
   )
   downloadPageLink[0].click()
 
-  await page.waitForNavigation()
+  await page.waitForXPath("//a[contains(text(), 'ダウンロードする')]")
 
   const cookies = await page.cookies()
 
@@ -74,18 +74,19 @@ async function main(mailAddress, password) {
     )
     for (const downloadUrl of downlaodUrls) {
       await download(downloadUrl, cookies, `${count}.jpg`)
-      console.log(`${downloadUrl} downloaded`)
+      console.log(`${downloadUrl} downloaded(${count})`)
       count++
     }
 
     // 5. Go to next page
     const nextPageButton = await page.$x("//button[contains(text(), '次へ')]")
-    const cursor = await nextPageButton[0].evaluate(
-      a => getComputedStyle(a).cursor,
+    const pointerEvents = await nextPageButton[0].evaluate(
+      a => getComputedStyle(a).pointerEvents,
     )
-    if (cursor === 'pointer') {
+    if (pointerEvents !== 'none') {
       nextPageButton[0].click()
-      await page.waitForNavigation()
+      await page.waitForTimeout(1000)
+      await page.waitForXPath("//a[contains(text(), 'ダウンロードする')]")
     } else {
       break
     }
