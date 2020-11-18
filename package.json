@@ -8,7 +8,7 @@
     "format": "prettier --write index.js"
   },
   "dependencies": {
-    "puppeteer": "^2.1.1"
+    "puppeteer": "^5.5.0"
   },
   "devDependencies": {
     "prettier": "^1.19.1"
